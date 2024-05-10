@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export default function Product({ data }) {
+export default function Product({ data, addToCart }) {
     return (
         <View style={styles.container} >
             <View>
@@ -8,7 +8,7 @@ export default function Product({ data }) {
                 <Text style={styles.price} >R$ {data.price}</Text>
             </View>
 
-            <TouchableOpacity style={styles.buttonAdd} >
+            <TouchableOpacity style={styles.buttonAdd} onPress={addToCart} >
                 <Text style={styles.buttonText} >+</Text>
             </TouchableOpacity>
         </View>

@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 
 import { Feather } from '@expo/vector-icons';
 
 import Product from '../../components/Product';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native';
+
+import { CartContext } from '../../contexts/CartContext';
 
 export default function Home() {
+    const { cart, addItemCart } = useContext(CartContext);
     const navigation = useNavigation()
     const [products, setProducts] = useState([
         {
@@ -41,13 +44,17 @@ export default function Home() {
         },
     ])
 
+    function handleAddCart(item){
+        addItemCart(item)
+    }
+
     return (
         <SafeAreaView style={styles.container} >
             <View style={styles.cartContent} >
                 <Text style={styles.title} >Lista de produtos</Text>
                 <TouchableOpacity style={styles.cartButton} onPress={()=> navigation.navigate("Cart") } >
                     <View style={styles.dot} >
-                        <Text style={styles.dotText} >3</Text>
+                        <Text style={styles.dotText} >{cart?.length}</Text>
                     </View>
                     <Feather name='shopping-cart' size={30} color="#000" />
                 </TouchableOpacity>
@@ -57,7 +64,7 @@ export default function Home() {
                 style={styles.list}
                 data={products}
                 keyExtractor={(item) => String(item.id) }
-                renderItem={({item})=>   <Product data={item} /> }
+                renderItem={({item})=>   <Product data={item} addToCart={() => handleAddCart(item)} /> }
             />
         </SafeAreaView>
     );
